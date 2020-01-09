@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="5dp"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="@color/colorPrimary">
+        app:cardBackgroundColor="@color/white">
 
 <!--        <LinearLayout-->
 <!--            android:layout_width="match_parent"-->
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:text="username"
                         android:id="@+id/username"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/black"
                         android:layout_gravity="center_vertical"
                         />
                 </LinearLayout>

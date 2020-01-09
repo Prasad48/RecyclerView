@@ -1,6 +1,7 @@
 package com.bhavaniprasad.recyclerview.viewmodel;
 
 import android.content.Context;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -19,9 +20,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import android.net.ConnectivityManager;
 
 import androidx.databinding.BindingAdapter;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
@@ -46,6 +50,10 @@ public class CategoryViewModel extends ViewModel {
     public String getImageUrl(){
         return imagepath;
     }
+    public MutableLiveData<Boolean> showProgressBar = new MutableLiveData<>();
+    public MutableLiveData<Boolean> show_networkError = new MutableLiveData<>();
+
+    private Call<ArrayList<Repository>> getlist;
 
     @BindingAdapter({"imageurl"})
 
@@ -62,6 +70,17 @@ public class CategoryViewModel extends ViewModel {
 
     public CategoryViewModel() {
     }
+
+    public LiveData<Boolean> getShowProgressBar() {
+        return showProgressBar;
+    }
+
+
+    public MutableLiveData<Boolean> getShow_networkError() {
+        return show_networkError;
+    }
+
+
 
     public MutableLiveData<ArrayList<Repository>> getMutableLiveData(final Context context) {
         arrlist=new ArrayList<>();
@@ -93,26 +112,29 @@ public class CategoryViewModel extends ViewModel {
             @Override
             public void onFailure(Call<RepositoryResponse> call, Throwable t) {
                 showToastMethod(context);
+                String error_message= t.getMessage();
+                Log.d("Error loading data", error_message);
+                showProgressBar.setValue(false);
+                show_networkError.setValue(true);
             }
-        });
-//        Categories categories = new Categories("1","title1","desc1","image1.png");
-//        CategoryViewModel categoryViewModel = new CategoryViewModel(categories);
-//        arrayList.add(categoryViewModel);
-//        arrayListMutableLiveData.setValue(arrayList);
 
+        });
         return arrayListMutableLiveData;
     }
 
-    private void fetchFirstPage(final Context context) {
-
-    }
+//    private void fetchFirstPage(final Context context) {
+//
+//    }
 
     public void showToastMethod(Context context) {
-        Toast.makeText(context, "mymessage ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
     }
 
     private void prepareData(RepositoryResponse repositoriesList) {
         adapter = new RepositoriesAdapter(repositoriesList.getItems());
         recyclerView.setAdapter(adapter);
     }
+
+
+
 }

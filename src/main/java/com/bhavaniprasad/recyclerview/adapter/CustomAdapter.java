@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bhavaniprasad.recyclerview.R;
 //import com.bhavaniprasad.recyclerview.databinding.CategoryBinding;
+import com.bhavaniprasad.recyclerview.interfaces.Ongitlistener;
 import com.bhavaniprasad.recyclerview.model.Repository;
 import com.squareup.picasso.Picasso;
 
@@ -30,11 +31,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     private ArrayList<Repository> arrListall;
     private Context cnt;
     private LayoutInflater layoutInflater;
+    private Ongitlistener ongitlistener;
 
-    public CustomAdapter(Context context, ArrayList<Repository> arrayList) {
+    public CustomAdapter(Context context, ArrayList<Repository> arrayList, Ongitlistener ongitlistener1) {
         this.cnt = context;
         this.arrList = arrayList;
         this.arrListall = new ArrayList<>(arrayList);
+        this.ongitlistener = ongitlistener1;
     }
 
 
@@ -46,7 +49,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         }
         View view = layoutInflater.from(parent.getContext())
                 .inflate(R.layout.rowlayout, parent, false);
-        return new CustomView(view);
+        return new CustomView(view,ongitlistener);
 //        CategoryBinding categoryBinding = DataBindingUtil.inflate(layoutInflater, R.layout.rowlayout,parent,false);
 //        return new CustomView(categoryBinding);
     }
@@ -112,18 +115,29 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         }
     };
 
-    class CustomView extends RecyclerView.ViewHolder {
+    public void setRepositoryList(ArrayList<Repository> repositories) {
+        this.arrList = repositories;
+    }
+
+    class CustomView extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView name, description, username, stars;
         ImageView avatar;
-
-        public CustomView(View itemView) {
+        Ongitlistener ongitlistener;
+        public CustomView(View itemView, Ongitlistener ongitlistener) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             description = itemView.findViewById(R.id.description);
             username = itemView.findViewById(R.id.username);
             avatar = itemView.findViewById(R.id.avatar);
             stars = itemView.findViewById(R.id.stars);
+            this.ongitlistener = ongitlistener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+           ongitlistener.onclickaction(getAdapterPosition());
         }
 //        private CategoryBinding categoryBinding;
 //        public CustomView(CategoryBinding categoryBinding) {
@@ -141,4 +155,5 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 //        }
 //    }
     }
+
 }
