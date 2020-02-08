@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Repository implements Parcelable {
 
+
     public Repository(Parcel in) {
         mDescription=in.readString();
         mName=in.readString();
@@ -34,6 +35,8 @@ public class Repository implements Parcelable {
     @SerializedName("stargazers_count")
     @Expose
     private float mStarsNumber;
+
+
 
 
 

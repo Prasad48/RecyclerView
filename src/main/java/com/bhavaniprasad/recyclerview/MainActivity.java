@@ -17,6 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -25,13 +26,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bhavaniprasad.recyclerview.adapter.CustomAdapter;
 import com.bhavaniprasad.recyclerview.interfaces.Ongitlistener;
 import com.bhavaniprasad.recyclerview.model.Repository;
+import com.bhavaniprasad.recyclerview.model.UserDetails;
 import com.bhavaniprasad.recyclerview.viewmodel.CategoryViewModel;
 
 import java.io.File;
@@ -55,30 +59,30 @@ public class MainActivity extends AppCompatActivity implements Ongitlistener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
         progressBar = findViewById(R.id.progress_bar);
         swipeRefreshLayout = findViewById(R.id.swipe_to_refresh);
         btn_retry = findViewById(R.id.retry);
         layout_nonetwork = findViewById(R.id.no_network);
 
-        if(!isNetworkAvailable()){
-            OkHttpClient client = new OkHttpClient();
-            client.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
+//        if(!isNetworkAvailable()){
+//            OkHttpClient client = new OkHttpClient();
+//            client.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
 
 //setup cache
 //            File httpCacheDirectory = new File(context.getCacheDir(), "responses");
-            int cacheSize = 10 * 1024 * 1024; // 10 MiB
-            Cache cache = new Cache(getApplicationContext().getCacheDir(), cacheSize);
+//            int cacheSize = 10 * 1024 * 1024; // 10 MiB
+//            Cache cache = new Cache(getApplicationContext().getCacheDir(), cacheSize);
 
 //add cache to the client
 //            client.setCache(cache);
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl(BASE_URL)
+//                    .client(client)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
+//        }
 
         categoryViewModel.getMutableLiveData(this).observe(this, new Observer<ArrayList<Repository>>() {
             @Override
@@ -211,9 +215,15 @@ public class MainActivity extends AppCompatActivity implements Ongitlistener {
 
     @Override
     public void onclickaction(int adapterPosition) {
-        int tl;
+        View row = recyclerView.getLayoutManager().findViewByPosition(adapterPosition);
+        TextView username = row.findViewById(R.id.username);
+        TextView desc = row.findViewById(R.id.description);
+        Intent i = new Intent(this, RepoDetails.class);
+        UserDetails instance = UserDetails.getInstance();
+        instance.username=username.getText().toString();
+        instance.description=desc.getText().toString();
+        startActivity(i);
         Log.e("tag", "clciked" + adapterPosition);
-
     }
 
     private boolean isNetworkAvailable() {

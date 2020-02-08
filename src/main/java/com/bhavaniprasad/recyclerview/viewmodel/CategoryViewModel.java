@@ -10,6 +10,7 @@ import com.bhavaniprasad.recyclerview.MainActivity;
 import com.bhavaniprasad.recyclerview.R;
 import com.bhavaniprasad.recyclerview.adapter.RepositoriesAdapter;
 import com.bhavaniprasad.recyclerview.model.Categories;
+import com.bhavaniprasad.recyclerview.model.RepoResponse;
 import com.bhavaniprasad.recyclerview.model.Repository;
 import com.bhavaniprasad.recyclerview.model.RepositoryResponse;
 import com.bhavaniprasad.recyclerview.remote.RepositoryApiMaker;
@@ -82,6 +83,48 @@ public class CategoryViewModel extends ViewModel {
 
 
 
+//    public MutableLiveData<ArrayList<Repository>> getMutableLiveData(final Context context) {
+//        arrlist=new ArrayList<>();
+////        Map<String, String> data = new HashMap<>();
+////        data.put("q", "created:>2017-10-22");
+////        data.put("sort", "stars");
+////        data.put("order", "desc");
+//        RepositoryApiService apiService = new RepositoryApiMaker().getService();
+//        Call<RepoResponse> repositoryListCall= apiService.currrepo("spite","looper");
+//        repositoryListCall.enqueue(new Callback<RepoResponse>() {
+//            @Override
+//            public void onResponse(Call<RepoResponse> call, Response<RepoResponse> response) {
+//                if (response.isSuccessful()) {
+////                    Toast.makeText(MainActivity.this,
+////                            " Sucessful",
+////                            Toast.LENGTH_SHORT).show();
+////                    String d= response.body().toString();
+//                   String s= response.body().getId();
+//                    arrayListMutableLiveData.setValue(arrlist);
+//
+////                    prepareData(repositoriesList);
+//
+//                } else {
+//
+//                    APIError error = ErrorUtils.parseError(response);
+//                    Log.d("error message", error.message());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RepoResponse> call, Throwable t) {
+//                showToastMethod(context);
+//                String error_message= t.getMessage();
+//                Log.d("Error loading data", error_message);
+//                showProgressBar.setValue(false);
+//                show_networkError.setValue(true);
+//            }
+//
+//        });
+//        return arrayListMutableLiveData;
+//    }
+
+    
     public MutableLiveData<ArrayList<Repository>> getMutableLiveData(final Context context) {
         arrlist=new ArrayList<>();
         Map<String, String> data = new HashMap<>();
@@ -97,6 +140,7 @@ public class CategoryViewModel extends ViewModel {
 //                    Toast.makeText(MainActivity.this,
 //                            " Sucessful",
 //                            Toast.LENGTH_SHORT).show();
+                    String d= response.body().toString();
                     arrlist=(ArrayList<Repository>) response.body().getItems();
                     arrayListMutableLiveData.setValue(arrlist);
 

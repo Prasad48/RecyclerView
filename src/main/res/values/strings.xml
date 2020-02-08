@@ -3,4 +3,6 @@
     <string name="something_went_wrong">Something went wrong..</string>
     <string name="alien">An alien is probably blocking your signal.</string>
     <string name="retry">RETRY</string>
+    <string name="link"><a href="https://www.google.com/">Google</a></string>
+
 </resources>
